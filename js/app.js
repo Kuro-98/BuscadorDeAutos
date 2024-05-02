@@ -24,16 +24,14 @@ const datosBusqueda = {
 	color: '',
 };
 document.addEventListener('DOMContentLoaded', () => {
-	mostrarAutos();
+	mostrarAutos(autos);
 	llenarSelect();
 });
 
 function filtrarMarca(auto) {
 	if (datosBusqueda.marca) {
-		console.log('si hay algo en marca');
 		return auto.marca === datosBusqueda.marca;
 	}
-	console.log('no hay algo en marca');
 	return auto;
 }
 
@@ -45,9 +43,69 @@ function filtrarYear(auto) {
 	return auto;
 }
 
+function filtrarMinimo(auto) {
+	const { minimo } = datosBusqueda;
+	if (minimo) {
+		return auto.precio >= minimo;
+	}
+	return auto;
+}
+
+function filtrarMaximo(auto) {
+	const { maximo } = datosBusqueda;
+	if (maximo) {
+		return auto.precio <= maximo;
+	}
+	return auto;
+}
+
+function filtrarPuertas(auto) {
+	const { puertas } = datosBusqueda;
+	if (puertas) {
+		return auto.puertas === puertas;
+	}
+	return auto;
+}
+
+function filtrarTransmision(auto) {
+	const { transmision } = datosBusqueda;
+	if (transmision) {
+		return auto.transmision === transmision;
+	}
+	return auto;
+}
+
+function filtrarColor(auto) {
+	const { color } = datosBusqueda;
+	if (color) {
+		return auto.color === color;
+	}
+	return auto;
+}
+
+function noResultado() {
+	limpiarHTML();
+	const noResultado = document.createElement('div');
+	noResultado.classList.add('alerta', 'error');
+	noResultado.textContent = 'No Hay Resultados, Intenta con otros términos de búsqueda';
+	resultado.appendChild(noResultado);
+}
+
 function filtrarAuto() {
-	const resultado = autos.filter(filtrarMarca).filter(filtrarYear);
-	console.log(resultado);
+	const resultado = autos
+		.filter(filtrarMarca)
+		.filter(filtrarYear)
+		.filter(filtrarMinimo)
+		.filter(filtrarMaximo)
+		.filter(filtrarPuertas)
+		.filter(filtrarTransmision)
+		.filter(filtrarColor);
+
+	if (resultado.length) {
+		mostrarAutos(resultado);
+	} else {
+		noResultado();
+	}
 }
 
 marca.addEventListener('change', (e) => {
@@ -85,13 +143,20 @@ color.addEventListener('change', (e) => {
 	filtrarAuto();
 });
 
-function mostrarAutos() {
+function mostrarAutos(autos) {
+	limpiarHTML();
 	autos.forEach((auto) => {
 		const { marca, modelo, year, puertas, transmision, precio, color } = auto;
 		const autoHTML = document.createElement('p');
-		autoHTML.textContent = `${marca} ${modelo} - ${year} - ${puertas} Puertas - Transmisión: ${transmision} - ${precio}`;
+		autoHTML.textContent = `${marca} ${modelo} - ${year} - ${puertas} Puertas - Transmisión: ${transmision} - ${color} - ${precio}`;
 		resultado.appendChild(autoHTML);
 	});
+}
+
+function limpiarHTML() {
+	while (resultado.hasChildNodes()) {
+		resultado.removeChild(resultado.firstChild);
+	}
 }
 
 //Genera los años del select
