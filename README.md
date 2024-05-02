@@ -16,7 +16,7 @@ Proyecto web desarrollado con JavaScript para filtrar y mostrar resultados de au
 
 ## Instrucciones de Despliegue
 
-1. Clona este repositorio: `git clone git@github.com:TUNOMBRE/BuscadorDeAutos.git`
+1. Clona este repositorio: `git@github.com:Kuro-98/BuscadorDeAutos.git`
 2. Abre el archivo `index.html` en tu navegador favorito para comenzar a explorar y utilizar el buscador de autos.
 
 ¡Disfruta explorando y descubriendo los autos que se adaptan a tus necesidades con este buscador interactivo de autos!
