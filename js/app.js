@@ -25,36 +25,71 @@ const datosBusqueda = {
 };
 document.addEventListener('DOMContentLoaded', () => {
 	mostrarAutos();
-
-	//Llena las opciones de años
 	llenarSelect();
 });
 
-function listenerSelect(referencia) {
-	referencia.addEventListener('change', (e) => {
-		datosBusqueda[e.target.id] = e.target.value;
-		console.log(datosBusqueda);
-	});
+function filtrarMarca(auto) {
+	if (datosBusqueda.marca) {
+		console.log('si hay algo en marca');
+		return auto.marca === datosBusqueda.marca;
+	}
+	console.log('no hay algo en marca');
+	return auto;
 }
 
-listenerSelect(marca, 'marca');
-listenerSelect(year, 'year');
-listenerSelect(minimo, 'minimo');
-listenerSelect(maximo, 'maximo');
-listenerSelect(puertas, 'puertas');
-listenerSelect(transmision, 'transmision');
-listenerSelect(color, 'color');
-// //EventListener para los select de busqueda
-// marca.addEventListener('change', (e) => {
-// 	datosBusqueda.marca = e.target.value;
-// });
+function filtrarYear(auto) {
+	const { year } = datosBusqueda;
+	if (year) {
+		return auto.year === year;
+	}
+	return auto;
+}
+
+function filtrarAuto() {
+	const resultado = autos.filter(filtrarMarca).filter(filtrarYear);
+	console.log(resultado);
+}
+
+marca.addEventListener('change', (e) => {
+	datosBusqueda.marca = e.target.value;
+	filtrarAuto();
+});
+
+year.addEventListener('change', (e) => {
+	datosBusqueda.year = parseInt(e.target.value);
+	filtrarAuto();
+});
+
+minimo.addEventListener('change', (e) => {
+	datosBusqueda.minimo = e.target.value;
+	filtrarAuto();
+});
+
+maximo.addEventListener('change', (e) => {
+	datosBusqueda.maximo = e.target.value;
+	filtrarAuto();
+});
+
+puertas.addEventListener('change', (e) => {
+	datosBusqueda.puertas = parseInt(e.target.value);
+	filtrarAuto();
+});
+
+transmision.addEventListener('change', (e) => {
+	datosBusqueda.transmision = e.target.value;
+	filtrarAuto();
+});
+
+color.addEventListener('change', (e) => {
+	datosBusqueda.color = e.target.value;
+	filtrarAuto();
+});
 
 function mostrarAutos() {
 	autos.forEach((auto) => {
 		const { marca, modelo, year, puertas, transmision, precio, color } = auto;
 		const autoHTML = document.createElement('p');
 		autoHTML.textContent = `${marca} ${modelo} - ${year} - ${puertas} Puertas - Transmisión: ${transmision} - ${precio}`;
-
 		resultado.appendChild(autoHTML);
 	});
 }
